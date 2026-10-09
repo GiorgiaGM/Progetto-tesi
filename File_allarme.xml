@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2">
+  <identifier>epi_1790766994_MIC_EST</identifier>
+  <sender>SmartCity_DigitalTwin_AI</sender>
+  <sent>2026-09-30T11:24:27+00:00</sent>
+  <status>Actual</status>
+  <msgType>Alert</msgType>
+  <scope>Public</scope>
+  <info>
+    <category>Safety</category>
+    <event>Incendio</event>
+    <urgency>Immediate</urgency>
+    <severity>Severe</severity>
+    <certainty>Observed</certainty>
+    <description>C'è un incendio, nessun ferito confermato, c'è del fumo.</description>
+    <area>
+      <areaDesc>Area Tattica Epicentro epi_1790766994_MIC_EST</areaDesc>
+      <circle>37.515930851161336, 15.071423307534316 0.1</circle>
+    </area>
+  </info>
+</alert>
