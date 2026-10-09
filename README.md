@@ -28,9 +28,9 @@ La repository è organizzata nei seguenti componenti principali:
 ├── overpass_api.py        # Interrogazione Overpass/OSM per punti sensibili e scuole
 ├── elenco_idranti.py      # Gestione e mappatura delle risorse idriche e idranti
 ├── vvf.py                 # Modulo per il calcolo della stima d'intervento dei Vigili del Fuoco
-├── servizi_territorio.py  # Analisi di supporto dei servizi territoriali[cite: 5]
-├── simulazione.py         # Script per la simulazione e il test degli scenari[cite: 5]
-├── .env                   # Variabili d'ambiente e token segreti (escluso da Git)[cite: 5]
-├── .env.example           # Modello di configurazione per le variabili d'ambiente[cite: 5]
-├── .gitignore             # File di configurazione per l'esclusione di file sensibili[cite: 5]
+├── servizi_territorio.py  # Analisi di supporto dei servizi territoriali
+├── simulazione.py         # Script per la simulazione e il test degli scenari
+├── .env                   # Variabili d'ambiente e token segreti (escluso da Git)
+├── .env.example           # Modello di configurazione per le variabili d'ambiente
+├── .gitignore             # File di configurazione per l'esclusione di file sensibili
 └── README.md              # Documentazione del progetto
