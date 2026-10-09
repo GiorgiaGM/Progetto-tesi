@@ -8,7 +8,7 @@ Sistema di supporto alle decisioni (DSS) distribuito per la gestione e la valuta
 ## Architettura del Sistema
 Il sistema adotta un approccio modulare e distribuito:
 - **Motore di Workflow (Dify):** Gestisce la logica di business, l'orchestrazione delle fasi di analisi dell'allarme e la generazione automatica dei report di impatto per gli operatori.
-- **Backend di Integrazione e Tool Python:** Una suite di moduli specializzati per l'interrogazione di API esterne (PredictHQ, Open-Meteo, Overpass/OpenStreetMap, Geoapify) e banche dati territoriali (ISTAT, idranti, Vigili del Fuoco).
+- **Backend di Integrazione e Tool Python:** Una suite di moduli specializzati per l'interrogazione di API esterne (PredictHQ, Open-Meteo, Overpass API, Geoapify) e banche dati territoriali (ISTAT, idranti, Vigili del Fuoco).
 - **API REST:** Comunicazione basata su chiamate HTTP POST per l'upload dei file di allarme (formato XML CAP) e l'esecuzione del workflow.
 
 ---
