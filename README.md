@@ -19,7 +19,7 @@ La repository è organizzata nei seguenti componenti principali:
 ```text
 ├── tesi_env/              # Ambiente virtuale Python (escluso da Git)
 ├── __pycache__/           # File di cache di Python (escluso da Git)
-├── File_allarme.xml            # File di allarme iniziale in formato standard CAP
+├── File_allarme.xml       # File di allarme iniziale in formato standard CAP
 ├── main.py                # Script principale di coordinamento ed esecuzione
 ├── cerca_eventi.py        # Integrazione API PredictHQ per eventi di massa e assembramenti
 ├── geoapify_tool.py       # Tool geospaziale e di geocodifica indirizzi
