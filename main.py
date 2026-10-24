@@ -1,9 +1,12 @@
 import os
-from fastapi import FastAPI, Query, HTTPException
+import uuid
+from fastapi import FastAPI, Query, HTTPException, Request
+from fastapi.responses import HTMLResponse, PlainTextResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import uvicorn
 import requests
+from database import init_db, salva_report_html, ottieni_report_html
 from overpass_api import determina_tipo_area_e_raggio_overpass
 from open_meteo_tool import get_weather_context
 from istat_tool import get_demographic_context
@@ -20,9 +23,66 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Inizializzo la tabella MySQL all'avvio dell'applicazione
+init_db()
+
 # Configurazione Dify
 DIFY_API_URL = os.getenv("DIFY_API_URL")
 DIFY_API_KEY = os.getenv("DIFY_API_KEY")
+
+
+@app.post("/salva-report-dify")
+async def salva_report_da_dify(request: Request):
+    """
+    Endpoint chiamato dal nodo HTTP Request di Dify.
+    Riceve l'HTML, usa la funzione salva_report_html di database.py
+    e restituisce il link con l'ID.
+    """
+    try:
+        body_bytes = await request.body()
+        html_content = body_bytes.decode("utf-8")
+        
+        if not html_content:
+            raise HTTPException(status_code=400, detail="Contenuto HTML mancante")
+        
+        # Isolo l'HTML a partire da <!DOCTYPE html>
+        html_content = html_content.strip()
+        
+        # Rimozione di eventuali graffe residue se presenti all'inizio o alla fine
+        while html_content.startswith("{"):
+            html_content = html_content[1:].strip()
+        while html_content.endswith("}"):
+            html_content = html_content[:-1].strip()
+            
+        doctype_index = html_content.find("<!DOCTYPE html>")
+        if doctype_index != -1:
+            html_content = html_content[doctype_index:]
+            
+        report_id = str(uuid.uuid4())[:8]
+        
+        salva_report_html(report_id, html_content)
+        
+        url_report = f"http://localhost:8000/report/{report_id}"
+        print(f"[SUCCESS] Report salvato con ID: {report_id}")
+        
+        return PlainTextResponse(url_report)
+        
+    except Exception as e:
+        print(f"[ERROR] {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/report/{report_id}", response_class=HTMLResponse)
+def visualizza_report(report_id: str):
+    """
+    Web Server: serve la pagina HTML con la mappa Leaflet a chi clicca sul link.
+    """
+    html_content = ottieni_report_html(report_id)
+    if not html_content:
+        raise HTTPException(status_code=404, detail="Report non trovato nel database.")
+    
+    return HTMLResponse(content=html_content, status_code=200)
+
 
 class SegnalazioneCollega(BaseModel):
     segnalazione: str
