@@ -68,8 +68,8 @@ python main.py
 
 ### Opzione A: Interfaccia Grafica (Dify)
 1. Accedi alla dashboard web di **Dify** (tramite Docker).
-2. Apri il **Workflow di Protezione Civile** e clicca su **Esegui Test**.
-3. Carica il file d'allarme XML nel blocco **Inizio** e avvia l'elaborazione.
+2. Carica il file d'allarme XML nel blocco **Inizio** e clicca su **Pubblica**.
+3. Apri il **Workflow di Protezione Civile** e clicca su **Esegui Test**.
 4. Verifica la generazione del report e accedi al link HTTP restituito dal server FastAPI.
 
 ### Opzione B: Test tramite Postman
