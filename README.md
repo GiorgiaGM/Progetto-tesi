@@ -35,8 +35,11 @@ La repository è organizzata nei seguenti componenti principali:
 ├── .env.example           # Modello di configurazione per le variabili d'ambiente
 ├── .gitignore             # File di configurazione per l'esclusione di file sensibili
 └── README.md              # Documentazione del progetto
+```
 
-## Guida all'Avvio e Installazione 
+---
+
+## Guida all'Avvio e Installazione
 1. Installare i pacchetti necessari per il progetto: 
 pip install fastapi uvicorn requests python-dotenv mysql-connector-python pandas shapely
 
@@ -56,6 +59,8 @@ python main.py
 5. Avviare l'applicazione Ollama sul tuo sistema per consentire l'esecuzione del modello linguistico locale.
 
 6. Avviare Docker Desktop come *Amministratore*. Dalla dashboard di Docker, puoi cliccare direttamente sul link della porta **`80:80`** (o sulla porta configurata) del container Nginx per accedere rapidamente all'interfaccia web di Dify.
+
+---
 
 ## Test e Validazione del Sistema
 
