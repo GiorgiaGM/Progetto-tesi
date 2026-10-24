@@ -35,3 +35,77 @@ La repository è organizzata nei seguenti componenti principali:
 ├── .env.example           # Modello di configurazione per le variabili d'ambiente
 ├── .gitignore             # File di configurazione per l'esclusione di file sensibili
 └── README.md              # Documentazione del progetto
+
+## Guida all'Avvio e Installazione 
+1. Installare i pacchetti necessari per il progetto: 
+pip install fastapi uvicorn requests python-dotenv mysql-connector-python pandas shapely
+
+2. Copiare il file di esempio .env.example rinominandolo in .env e inserire le chiavi API e i parametri di connessione al database MySQL:
+cp .env.example .env
+
+3. Avvio del Database (MySQL)
+Aprire il **XAMPP Control Panel** e cliccare su **Start** in corrispondenza del modulo **MySQL**.
+Aprire **MySQL Workbench** e connettiti all'istanza locale (`localhost`, utente `root`).
+Esegui i seguenti comandi SQL per creare e selezionare il database del progetto:
+  CREATE DATABASE protezione_civile_db;
+  USE protezione_civile_db;
+
+4. Avviare il backend FastAPI tramite il server Uvicorn:
+python main.py
+
+5. Avviare l'applicazione Ollama sul tuo sistema per consentire l'esecuzione del modello linguistico locale.
+
+6. Avviare Docker Desktop come *Amministratore*. Dalla dashboard di Docker, puoi cliccare direttamente sul link della porta **`80:80`** (o sulla porta configurata) del container Nginx per accedere rapidamente all'interfaccia web di Dify.
+
+## Test e Validazione del Sistema
+
+È possibile testare e convalidare l'intero flusso del Decision Support System attraverso due modalità:
+
+### Opzione A: Interfaccia Grafica (Dify)
+1. Accedi alla dashboard web di **Dify** (tramite Docker).
+2. Apri il **Workflow di Protezione Civile** e clicca su **Esegui Test**.
+3. Carica il file d'allarme XML nel blocco **Inizio** e avvia l'elaborazione.
+4. Verifica la generazione del report e accedi al link HTTP restituito dal server FastAPI.
+
+### Opzione B: Test tramite Postman
+
+Step 1: Caricamento del File d'Allarme
+Invia una richiesta `POST` in formato `form-data` all'endpoint di Dify per caricare il documento XML:
+* **URL:** `http://localhost/v1/files/upload`
+* **Headers:** 
+  * `Authorization: Bearer app-EBJklQtKFbAXOWLBPK0OO4TO`
+* **Body (`form-data`):**
+  * `file`: Seleziona il file XML di test (es. `file_allarme2.xml`)
+  * `user`: `operatore`
+
+**Nota Importante:** Dalla risposta JSON di questa richiesta, copia il valore del campo **`id`** generato dal sistema (es. `"b6bdd658-1545-4ec5-8ec6-78b6f96609d7"`).
+
+Step 2: Esecuzione del Workflow
+Incolla l'`id` appena copiato all'interno del payload JSON e invia la richiesta `POST` per avviare l'elaborazione:
+* **URL:** `http://localhost/v1/workflows/run`
+* **Headers:** 
+  * `Authorization: Bearer app-EBJklQtKFbAXOWLBPK0OO4TO`
+  * `Content-Type: application/json`
+* **Body (`raw` JSON):**
+```json
+{
+  "inputs": {
+    "time": "13:00",
+    "File_allarme": {
+      "type": "document",
+      "transfer_method": "local_file",
+      "upload_file_id": "INSERISCI_QUI_L_ID_RICEVUTO_DAL_PRIMO_STEP"
+    }
+  },
+  "response_mode": "blocking",
+  "user": "operatore"
+}
+
+> **Risultato finale:** Il workflow elaborerà i dati, interrogherà il server FastAPI (`main.py`) per i servizi geospaziali e la persistenza su MySQL, restituendo con successo il JSON con il link interattivo del report:
+> ```json
+> {
+>   "outputs": {
+>     "link_report": "http://localhost:8000/report/80c7d2a3"
+>   }
+> }
+> ```
